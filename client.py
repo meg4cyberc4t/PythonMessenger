@@ -1,9 +1,29 @@
 import socket
 import threading
 
-HOST = '127.0.0.1'
-PORT = 10000
+while True:
+    input_host = input("Input your IP server" \
+                       "(Default: 127.0.0.1): ")
+    if input_host.replace(".", "").strip().isnumeric():
+        HOST = input_host
+        break
+    elif input_host.strip() == "":
+        HOST = "127.0.0.1"
+        break
+    else:
+        print("Incorrect IP server...")
 
+while True:
+    input_port = input("Input port" \
+                       "(Default: 10000): ")
+    if input_port.isnumeric():
+        PORT = int(input_port)
+        break
+    elif input_port.strip() == "":
+        PORT = 10000
+        break
+    else:
+        print("Incorrect port...")    
 
 class Client:
     def __init__(self, host, port):
@@ -53,5 +73,7 @@ class Client:
                 self.sock.close()
                 break
 
-
-client = Client(HOST, PORT)
+try:
+    client = Client(HOST, PORT)
+except ConnectionRefusedError:
+    print("No server connection")
